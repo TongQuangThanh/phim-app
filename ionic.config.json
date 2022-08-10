@@ -1,0 +1,7 @@
+{
+  "name": "phim-online",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
