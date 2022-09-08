@@ -1,0 +1,194 @@
+<ion-content>
+  <ion-row *ngIf="!dataLoaded" class="h-100 w-100 ion-align-items-center ion-justify-content-center">
+    <ion-text color="primary" class="ion-text-center">
+      {{ loadingText }}
+      <br>
+      <ion-spinner color="primary" class="mt-05"></ion-spinner>
+    </ion-text>
+  </ion-row>
+  <div class="h-100 d-flex flex-column" [class.ion-hide]="!dataLoaded">
+    <ion-header [translucent]="true" class="ion-no-border p-absolute">
+      <ion-toolbar class="bg-transparent">
+        <ion-buttons slot="start">
+          <ion-back-button defaultHref="/tabs/home"></ion-back-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-button>
+            <ion-icon slot="icon-only" ios="search-outline" md="search-sharp"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <div [id]="playerId" [class.ion-hide]="!isPlaying"></div>
+    <div [class.ion-hide]="isPlaying" class="p-relative ion-text-center">
+      <img class="poster w-100" [src]="movie?.poster_url || movie?.thumb_url" />
+    </div>
+
+
+    <div class="ion-margin">
+      <ion-title class="f-600 ion-no-padding">{{ movie?.name }}</ion-title>
+      <ion-text color="medium">{{ movie?.origin_name }}</ion-text>
+      <br>
+      <ion-button class="ion-margin-end border-primary f-12 f-600 chip chip-select h-auto" mode="ios" color="primary"
+        fill="outline" *ngFor="let item of movie?.category" [routerLink]="['/tabs/explore', { genre: item.name }]">
+        {{ item.name }}
+      </ion-button>
+      <ion-row class="ion-justify-content-between">
+        <ion-col size="6">
+          <ion-button (click)="play()" mode="ios" shape="round" fill="solid" expand="block"
+            class="color-white ion-margin-end f-500">
+            <ion-icon slot="start" ios="play-circle-outline" md="play-circle-sharp"></ion-icon>
+            Xem phim
+          </ion-button>
+        </ion-col>
+        <ion-col size="6">
+          <!-- <ion-button (click)="addToFavorite()" mode="ios" shape="round" fill="outline" expand="block"
+            class="f-500 border-2">
+            <ion-icon slot="start" ios="add-circle-outline" md="add-circle-sharp"></ion-icon>
+            Yêu thích
+          </ion-button> -->
+        </ion-col>
+      </ion-row>
+      <br>
+
+      <ion-text color="dark" class="f-14">
+        {{ content.length > 50 && !showAllContent ? content.slice(0, 150) + '...' : content }}
+      </ion-text>
+      <ion-button *ngIf="content.length > 50" (click)="showAllContent = !showAllContent" fill="clear" mode="ios"
+        class="ion-no-padding ion-no-margin height-unset vertical-middle f-14 f-600" outline="none">
+        {{ showAllContent ? 'rút gọn' : 'thêm' }}
+      </ion-button>
+
+
+      <ion-slides #crew [options]="slideOpts" class="ion-margin-top" [attr.virtual]="true">
+        <ion-slide *ngFor="let item of movie?.director">
+          <ion-item lines="none" class="crew ion-no-padding">
+            <ion-avatar slot="start" class="mr-05">
+              <ion-icon class="f-40" ios="person-circle-outline" md="person-circle-sharp"></ion-icon>
+            </ion-avatar>
+            <ion-label>
+              <div>
+                <p>{{ item }}</p>
+                <div>Đạo diễn</div>
+              </div>
+            </ion-label>
+          </ion-item>
+        </ion-slide>
+        <ion-slide *ngFor="let item of movie?.actor">
+          <ion-item lines="none" class="crew ion-no-padding">
+            <ion-avatar slot="start" class="mr-05">
+              <ion-icon class="f-40" ios="person-circle-outline" md="person-circle-sharp"></ion-icon>
+            </ion-avatar>
+            <ion-label>
+              <div>
+                <p>{{ item }}</p>
+                <div>Diễn viên</div>
+              </div>
+            </ion-label>
+          </ion-item>
+        </ion-slide>
+      </ion-slides>
+
+
+      <div *ngIf="movie?.type === type.series && (this.episodes[0].link_m3u8 || this.episodes[0].link_embed)">
+        <ion-row class="ion-justify-content-between ion-margin-vertical">
+          <div>
+            <ion-title class="ion-no-padding">Episodes</ion-title>
+          </div>
+          <div>
+            <!-- <ion-button id="click-trigger">Season</ion-button> -->
+            <ion-popover trigger="click-trigger" triggerAction="click">
+              <ng-template>
+                <ion-content class="ion-padding"></ion-content>
+              </ng-template>
+            </ion-popover>
+          </div>
+        </ion-row>
+
+        <ion-slides #episode [options]="slideOpts" [attr.virtual]="true">
+          <ion-slide *ngFor="let item of episodes; index as i">
+            <div class="curve p-relative movie-title w-100">
+              <ion-icon ios="play-circle-outline" md="play-circle-sharp" class="p-absolute transform-center f-40"
+                (click)="playFullScreen(item.link_m3u8 || item.link_embed)">
+              </ion-icon>
+              <div class="p-absolute bottom-left f-12">Episode {{ i + 1 }}</div>
+            </div>
+          </ion-slide>
+        </ion-slides>
+      </div>
+    </div>
+
+
+    <div class="ion-margin grow-1 ion-padding-bottom">
+      <ion-segment (ionChange)="segmentChanged($event)" [value]="segment" class="ion-margin-bottom" mode="md">
+        <ion-segment-button value="more" class="ion-no-margin">
+          <ion-label class="ion-text-capitalize f-16 f-600 ion-no-margin">Đề xuất</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="trailers" class="ion-no-margin">
+          <ion-label class="ion-text-capitalize f-16 f-600 ion-no-margin">Trailers</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="info" class="ion-no-margin">
+          <ion-label class="ion-text-capitalize f-16 f-600 ion-no-margin">Thông tin</ion-label>
+        </ion-segment-button>
+        <!-- <ion-segment-button value="comment" class="ion-no-margin">
+          <ion-label class="ion-text-capitalize">Bình luận</ion-label>
+        </ion-segment-button> -->
+      </ion-segment>
+
+      <div [class.ion-hide]="segment !== 'trailers'" class="ion-text-center">
+        <div class="ion-text-center" [id]="trailerId">Đang cập nhật</div>
+      </div>
+      <div [class.ion-hide]="segment !== 'more'" class="h-100">
+        <ion-slides #more [options]="slideOpts" class="ion-margin-start" [attr.virtual]="true">
+          <ion-slide *ngFor="let item of recommended" [routerLink]="['/phim', item.slug]">
+            <img [src]="item.thumb_url" class="radius" />
+          </ion-slide>
+        </ion-slides>
+      </div>
+      <div [class.ion-hide]="segment !== 'info'" class="f-14">
+        <ion-row>
+          <ion-col size="5">
+            <ion-row class="ion-align-items-center h-100">
+              <ion-col size="12" class="ion-no-padding">Trạng thái</ion-col>
+            </ion-row>
+          </ion-col>
+          <ion-col size="7" class="ion-text-end">
+            <ion-chip class="ion-no-margin" [color]="getStatusColor(movie?.status)">
+              {{ getStatus(movie?.status) }}
+            </ion-chip>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="5">Tập mới nhất</ion-col>
+          <ion-col size="7" class="ion-text-end">
+            {{ movie?.episode_current }}
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="5">Chất lượng</ion-col>
+          <ion-col size="7" class="ion-text-end">{{ movie?.quality || 'Đang cập nhật' }}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="5">Thời lượng</ion-col>
+          <ion-col size="7" class="ion-text-end">{{ movie?.time || 'Đang cập nhật' }}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="5">Quốc gia</ion-col>
+          <ion-col size="7" class="ion-text-end">{{ getCountries(movie?.country) || 'Đang cập nhật' }}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="5">Năm sản xuất</ion-col>
+          <ion-col size="7" class="ion-text-end">{{ movie?.year || 'Đang cập nhật' }}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="5">Giờ chiếu</ion-col>
+          <ion-col size="7" class="ion-text-end">{{ showTimes || 'Đang cập nhật' }}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="5">Ngôn ngữ/phụ đề</ion-col>
+          <ion-col size="7" class="ion-text-end">{{ movie?.lang || 'Đang cập nhật' }}</ion-col>
+        </ion-row>
+      </div>
+    </div>
+  </div>
+</ion-content>

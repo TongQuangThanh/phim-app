@@ -1,0 +1,62 @@
+<ion-content class="ion-padding">
+  <div>
+    <ion-text color="white">
+      <h1 class="f-600 ion-text-center">{{ loginMode ? 'Đăng nhập' : 'Đăng ký' }}</h1>
+    </ion-text>
+  </div>
+
+  <div class="ion-margin-vertical ion-padding-vertical">
+    <ion-item lines="none" class="radius ion-margin-vertical">
+      <ion-icon slot="start" ios="mail-outline" md="mail-sharp"></ion-icon>
+      <ion-input placeholder="Email" [(ngModel)]="email" (ngModelChange)="emailError = false"></ion-input>
+      <ion-note slot="helper" *ngIf="emailError">Vui lòng nhập email hợp lệ</ion-note>
+    </ion-item>
+    <ion-item lines="none" class="radius ion-margin-vertical">
+      <ion-icon slot="start" ios="lock-closed-outline" md="lock-closed-sharp"></ion-icon>
+      <ion-icon slot="end" ios="eye-outline" md="eye-sharp" (click)="showPass = !showPass" *ngIf="!showPass"></ion-icon>
+      <ion-icon slot="end" ios="eye-off-outline" md="eye-off-sharp" (click)="showPass = !showPass" *ngIf="showPass"></ion-icon>
+      <ion-input placeholder="Mật khẩu" [(ngModel)]="password" (ngModelChange)="passwordError = false"
+        [type]="showPass ? '' : 'password'"></ion-input>
+      <ion-note slot="helper" *ngIf="passwordError">Vui lòng nhập mật khẩu với ít nhất 8 kí tự</ion-note>
+    </ion-item>
+    <ion-item lines="none" class="radius ion-margin-vertical" *ngIf="!loginMode">
+      <ion-icon slot="start" ios="lock-closed-outline" md="lock-closed-sharp"></ion-icon>
+      <ion-icon slot="end" ios="eye-outline" md="eye-sharp" (click)="showPass = !showPass" *ngIf="!showPass"></ion-icon>
+      <ion-icon slot="end" ios="eye-off-outline" md="eye-off-sharp" (click)="showPass = !showPass" *ngIf="showPass"></ion-icon>
+      <ion-input placeholder="Nhập lại mật khẩu" [(ngModel)]="rePassword" (ngModelChange)="rePasswordError = false"
+        [type]="showPass ? '' : 'password'">
+      </ion-input>
+      <ion-note slot="helper" *ngIf="rePasswordError">Vui lòng nhập lại chính xác mật khẩu</ion-note>
+    </ion-item>
+  </div>
+
+  <div class="ion-text-center ion-margin-vertical" *ngIf="loginMode">
+    <ion-text color="primary" class="f-14" routerLink="">
+      Quên mật khẩu?
+    </ion-text>
+  </div>
+  <ion-button (click)="submit()" expand="block" shape="round" mode="ios" class="ion-margin color-white">
+    {{ loginMode ? 'Đăng nhập' : 'Đăng ký' }}
+  </ion-button>
+
+  <ion-row class="ion-justify-content-center ion-align-items-center ion-padding-top">
+    <div class="line ion-margin-end"></div>
+    <span>hoặc</span>
+    <div class="line ion-margin-start"></div>
+  </ion-row>
+
+  <ion-row class="ion-justify-content-center ion-margin">
+    <div class="logo radius ion-padding" (click)="fb()">
+      <ion-img class="logo-icon" src="../../../../assets/icon/facebook.svg"></ion-img>
+    </div>
+    <!-- <div class="logo radius ion-padding" (click)="google()">
+      <ion-img class="logo-icon" src="../../../../assets/icon/google.svg"></ion-img>
+    </div> -->
+  </ion-row>
+  <div class="ion-text-center">
+    <ion-label class="f-14">
+      {{ loginMode ? 'Chưa có tài khoản?' : 'Đã có tài khoản?' }}
+      <ion-text color="primary" (click)="loginMode = !loginMode">Đăng {{ loginMode ? 'ký' : 'nhập' }} ngay</ion-text>
+    </ion-label>
+  </div>
+</ion-content>

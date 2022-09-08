@@ -1,0 +1,11 @@
+ion-content,
+ion-toolbar {
+  background: unset;
+  --background: unset;
+}
+
+.chip-select {
+  // padding: 1.2rem;
+  padding: 1.2rem 1rem;
+  border-radius: 2rem;
+}

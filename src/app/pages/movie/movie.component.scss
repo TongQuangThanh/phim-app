@@ -1,0 +1,23 @@
+.poster {
+  max-height: 50vh;
+  object-fit: fill;
+}
+
+.chip::part(native) {
+  padding: 0.5rem 0.75rem;
+}
+
+.swiper-slide {
+  img {
+    height: 200px;
+  }
+
+  .crew {
+    height: 10vh;
+  }
+
+  .movie-title {
+    height: 10vh;
+    background-color: black;
+  }
+}

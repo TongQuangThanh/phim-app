@@ -1,0 +1,90 @@
+<ion-content class="ion-padding">
+  <div class="ion-margin">
+    <ng-container [ngTemplateOutlet]="filter" [ngTemplateOutletContext]="{
+        passTitle: 'Loại phim/chương trình',
+        passSelected: selectedTypes,
+        passList: typesArr,
+        passShow: showType,
+        passKey: 'type'
+      }">
+    </ng-container>
+    <ng-container [ngTemplateOutlet]="filter" [ngTemplateOutletContext]="{
+        passTitle: 'Thể loại',
+        passSelected: selectedGenres,
+        passList: genres,
+        passShow: showGenre,
+        passKey: 'genre'
+      }">
+    </ng-container>
+    <ng-container [ngTemplateOutlet]="filter" [ngTemplateOutletContext]="{ 
+        passTitle: 'Quốc gia', 
+        passSelected: selectedCountries, 
+        passList: countries,
+        passShow: showCountry,
+        passKey: 'country'
+      }">
+    </ng-container>
+    <ng-container [ngTemplateOutlet]="filter" [ngTemplateOutletContext]="{
+      passTitle: 'Trạng thái', 
+      passSelected: selectedStatus, 
+      passList: statusArr,
+      passShow: showStatus,
+      passKey: 'status'
+    }">
+    </ng-container>
+    <ion-label class="f-600 f-18">Năm</ion-label>
+    <ion-row class="f-600 ion-margin-vertical">
+      <ion-col size="6" class="ion-no-padding">
+        <ion-row class="ion-align-items-center">
+          <ion-text>Từ</ion-text>
+          <ion-button class="ion-no-margin no-ripple" (click)="openPicker('from')" fill="clear">
+            <div class="underline f-16 f-600">{{ from }}</div>
+          </ion-button>
+        </ion-row>
+      </ion-col>
+      <ion-col size="6" class="ion-no-padding">
+        <ion-row class="ion-align-items-center">
+          <ion-text>đến</ion-text>
+          <ion-button class="ion-no-margin no-ripple" (click)="openPicker('to')" fill="clear">
+            <div class="underline f-16 f-600">{{ to }}</div>
+          </ion-button>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-label class="f-600 f-18">Sắp xếp</ion-label>
+    <hr>
+    <ion-row>
+      <ion-col size="6" class="ion-no-padding ion-padding-end">
+        <ion-button class="f-600 color-white" shape="round" fill="solid" mode="ios" expand="block"
+          style="--background: #35383f" (click)="reset()">
+          Reset
+        </ion-button>
+      </ion-col>
+      <ion-col size="6" class="ion-no-padding ion-padding-start">
+        <ion-button class="f-600 color-white" shape="round" fill="solid" mode="ios" expand="block" (click)="search()">
+          Tìm kiếm
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-content>
+
+<ng-template #filter let-title="passTitle" let-selected="passSelected" let-list="passList" let-key="passKey"
+  let-show="passShow">
+  <ion-row class="ion-justify-content-between ion-align-items-center">
+    <ion-label class="f-600 f-18">{{ title }}</ion-label>
+    <ion-button *ngIf="list.length > defaultShowChip" (click)="showMore(key)" expand="block" fill="clear" shape="round"
+      mode="ios" class="f-600 f-16 ion-no-padding">
+      {{ show === defaultShowChip ? 'Hiện thêm' : 'Rút gọn' }}
+    </ion-button>
+  </ion-row>
+  <div class="ion-margin-vertical">
+    <ion-chip color="primary" class="m-05 chip-select f-600" [outline]="selected.length !== 0" (click)="resetSelection(key)">
+      <ion-label>Tất cả</ion-label>
+    </ion-chip>
+    <ion-chip color="primary" class="m-05 chip-select f-600" [outline]="!checkSelected(key, item.key || item)"
+      *ngFor="let item of list.slice(0, show)" (click)="toggleItem(selected, item.key || item, key)">
+      <ion-label class="w-100 ion-text-center">{{ item.title || item }}</ion-label>
+    </ion-chip>
+  </div>
+</ng-template>

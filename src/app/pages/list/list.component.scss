@@ -1,0 +1,14 @@
+ion-img::part(image) {
+  object-fit: cover;
+  border-radius: 1rem;
+}
+
+.year {
+  top: 1rem;
+  left: 1rem;
+  height: 1.5rem;
+  &::part(native) {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}

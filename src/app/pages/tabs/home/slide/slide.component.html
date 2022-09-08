@@ -1,0 +1,9 @@
+<ion-row class="ion-justify-content-between ion-align-items-center ion-margin-top">
+  <ion-card-title class="ion-margin">{{ title }}</ion-card-title>
+  <ion-button class="f-600" mode="ios" fill="clear" [routerLink]="['/danh-sach', urlPath]">Xem thêm</ion-button>
+</ion-row>
+<ion-slides [options]="slideOpts" class="ion-margin-start">
+  <ion-slide *ngFor="let item of movies" [routerLink]="['/phim', item.slug]">
+    <img [src]="item.thumb_url" class="radius" />
+  </ion-slide>
+</ion-slides>

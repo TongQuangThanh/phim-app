@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>favorite</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row class="ion-margin">
+    <ion-col size="6" *ngFor="let item of movies" class="radius p-relative" [routerLink]="['/phim', item.slug]">
+      <ion-img [src]="item.thumb_url" class="h-100"></ion-img>
+      <ion-button *ngIf="item.year" class="p-absolute year f-10 color-white ion-no-margin">
+        {{ item.year }}
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-content>

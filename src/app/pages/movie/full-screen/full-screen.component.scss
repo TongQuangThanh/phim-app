@@ -1,0 +1,57 @@
+@import "../../../../theme/variables";
+
+.countdown {
+  height: 2.5rem;
+  width: 2.5rem;
+}
+
+.timer {
+  background: -webkit-linear-gradient(
+    left,
+    var(--ion-color-primary) 50%,
+    var(--ion-color-light) 50%
+  );
+  border-radius: 100%;
+  position: absolute;
+  top: -0.55rem;
+  left: 0.05rem;
+  animation: time calc(var(--duration) * 1s) steps(1000, start) infinite;
+  -webkit-mask: radial-gradient(transparent 60%, var(--ion-color-medium) 50%);
+  mask: radial-gradient(transparent 60%, var(--ion-color-medium) 50%);
+}
+
+.mask {
+  border-radius: 100% 0 0 100% / 50% 0 0 50%;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 50%;
+  animation: mask calc(var(--duration) * 1s) steps(500, start) infinite;
+  transform-origin: 100% 50%;
+}
+
+@keyframes time {
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes mask {
+  0% {
+    background: var(--ion-color-light);
+    -webkit-transform: rotate(0deg);
+  }
+  50% {
+    background: var(--ion-color-light);
+    -webkit-transform: rotate(-180deg);
+  }
+  50.01% {
+    background: var(--ion-color-primary);
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    background: var(--ion-color-primary);
+    -webkit-transform: rotate(-180deg);
+  }
+}

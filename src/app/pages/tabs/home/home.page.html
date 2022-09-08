@@ -1,0 +1,29 @@
+<ion-content [fullscreen]="true" class="ion-padding-bottom">
+  <ion-card class="ion-no-margin p-relative">
+    <ion-img [src]="movie?.poster_url" style="z-index: -1;"></ion-img>
+    <div class="p-absolute transform-center">
+      <!-- <ion-title color="white">{{ movie?.name }}</ion-title> -->
+      <ion-icon slot="start" ios="play-circle-outline" md="play-circle-sharp" [routerLink]="['/phim', movie?.slug]"
+        color="primary" class="f-40">
+      </ion-icon>
+      <div>
+        <!-- <ion-button mode="ios" size="small" shape="round" fill="solid" class="color-white ion-margin-end"
+          [routerLink]="['/phim', movie?.slug]">
+        <ion-icon slot="start" ios="play-outline" md="play-sharp" [routerLink]="['/phim', movie?.slug]"></ion-icon>
+        </ion-button> -->
+        <!-- <ion-button mode="ios" size="small" shape="round" fill="outline" class="color-white border-white"
+          (click)="addToFavorite()">
+          <ion-icon slot="start" ios="play-outline" md="add-sharp" color="white" class="color-white"></ion-icon>
+        </ion-button> -->
+      </div>
+    </div>
+  </ion-card>
+
+  <app-slide [title]="'Phim mới cập nhật'" [urlPath]="'moi-nhat'" [movies]="latest"></app-slide>
+  <app-slide [title]="'Phim chiếu rạp'" [urlPath]="'chieu-rap'" [movies]="cinema"></app-slide>
+  <app-slide [title]="'Phim bộ'" [urlPath]="'phim-bo'" [movies]="series"></app-slide>
+  <app-slide [title]="'Phim lẻ'" [urlPath]="'phim-le'" [movies]="single"></app-slide>
+  <app-slide [title]="'Phim hoạt hình'" [urlPath]="'hoat-hinh'" [movies]="anime"></app-slide>
+  <app-slide [title]="'TV Shows'" [urlPath]="'tv-shows'" [movies]="tvShows"></app-slide>
+
+</ion-content>

@@ -1,0 +1,28 @@
+<ion-header [translucent]="true" class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ title }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/tabs/explore">
+        <ion-icon slot="icon-only" ios="search-outline" md="search-sharp"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content fullscreen="true">
+  <ion-row class="ion-margin">
+    <ion-col size="6" *ngFor="let item of movies; index as i" class="radius p-relative"
+      [routerLink]="['/phim', item.slug]">
+      <img [src]="item.thumb_url || '../../../assets/blank.jpg'" class="h-100 radius"
+        [attr.loading]="i % 10 > 4 ? 'lazy' : 'eager'" />
+      <ion-button *ngIf="item.year" class="p-absolute year f-10 color-white ion-no-margin">
+        {{ item.year }}
+      </ion-button>
+    </ion-col>
+  </ion-row>
+  <ion-infinite-scroll (ionInfinite)="getMovies($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Đang tải phim..."></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

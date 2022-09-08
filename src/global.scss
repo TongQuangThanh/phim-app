@@ -16,7 +16,7 @@
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
-@import '~@ionic/angular/css/display.css';
+@import "~@ionic/angular/css/display.css";
 
 /* Optional CSS utils that can be commented out */
 @import "~@ionic/angular/css/padding.css";
@@ -24,3 +24,261 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+* {
+  letter-spacing: 0px;
+}
+
+ion-content,
+ion-toolbar {
+  background: #181a20;
+  --background: #181a20;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.grow-1 {
+  flex-grow: 1;
+}
+
+.flex-no-wrap {
+  flex-wrap: nowrap;
+}
+
+.height-unset {
+  height: unset;
+}
+
+.vertical-middle {
+  vertical-align: middle;
+}
+
+.h-auto {
+  height: auto;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.p-relative {
+  position: relative;
+}
+
+.p-absolute {
+  position: absolute;
+}
+
+.transform-center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.bottom-left {
+  bottom: 0.5rem;
+  left: 0.5rem;
+}
+
+.bottom-0 {
+  bottom: 0;
+}
+
+.curve {
+  border-radius: 0.5rem;
+  --border-radius: 0.5rem;
+}
+
+.radius {
+  border-radius: 1rem;
+  --border-radius: 1rem;
+}
+
+.round {
+  border-radius: 50%;
+  --border-radius: 50%;
+}
+
+.f-10 {
+  font-size: 10px;
+  --font-size: 10px;
+}
+
+.f-12 {
+  font-size: 12px;
+  --font-size: 12px;
+}
+
+.f-14 {
+  font-size: 14px;
+  --font-size: 14px;
+}
+
+.f-16 {
+  font-size: 16px;
+  --font-size: 16px;
+}
+
+.f-18 {
+  font-size: 18px;
+  --font-size: 18px;
+}
+
+.f-40 {
+  font-size: 40px;
+  --font-size: 40px;
+}
+
+.f-600 {
+  font-weight: 600;
+}
+
+.f-700 {
+  font-weight: 700;
+}
+
+.border-2 {
+  border-width: 2px !important;
+  --border-width: 2px !important;
+}
+
+.py-05 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.py-075 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.mt-025 {
+  margin-top: 0rem;
+}
+
+.mb-025 {
+  margin-bottom: 0rem;
+}
+
+.m-05 {
+  margin: 0.5rem;
+}
+
+.mt-05 {
+  margin-top: 0.5rem;
+}
+
+.mb-05 {
+  margin-bottom: 0.5rem;
+}
+
+.mx-05 {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.my-05 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.my-075 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.ml-05 {
+  margin-left: 0.5rem;
+}
+
+.mr-05 {
+  margin-right: 0.5rem;
+}
+
+.my-auto {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mt-2 {
+  margin-top: 2rem;
+}
+
+.m-2 {
+  margin: 2rem;
+}
+
+.color-white,
+.color-white::part(native) {
+  color: var(--ion-color-white);
+  --color: var(--ion-color-white);
+}
+
+.border-white::part(native) {
+  border-color: var(--ion-color-white);
+  --border-color: var(--ion-color-white);
+}
+
+ion-list,
+ion-item::part(native),
+.bg-transparent {
+  background: transparent !important;
+  --background: transparent;
+  --ion-color-base: transparent !important;
+}
+
+.no-ripple {
+  --ripple-color: transparent;
+}
+
+ion-modal {
+  &::part(content) {
+    bottom: 0;
+    max-height: 85vh;
+    position: absolute;
+    --border-radius: 40px 40px 0px 0px;
+  }
+}
+
+ion-modal.popup {
+  &::part(content) {
+    max-width: 80vw;
+    max-height: 100vh;
+    --border-radius: 20px;
+    --background: transparent;
+  }
+}
+
+hr,
+.line {
+  border-top: 2px solid var(--ion-color-light);
+  flex-grow: 1;
+  height: 0px;
+}
+
+ion-chip.chip-select {
+  font-size: 16px;
+  border: 1.5px solid var(--ion-color-base);
+  color: var(--ion-color-white);
+  background-color: var(--ion-color-base);
+  min-width: 3rem;
+  &.chip-outline {
+    background-color: transparent;
+    color: var(--ion-color-base);
+  }
+}
