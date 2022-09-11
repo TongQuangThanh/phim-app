@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-import { APP_NAME_BANDWIDTH, APP_NAME_CATEGORY_SELECTED, APP_NAME_TYPE, type } from 'src/app/shared/common/const';
-import { getDataLocalStorage } from 'src/app/shared/common/utils';
+import { APP_NAME_BANDWIDTH, APP_NAME_CATEGORY_SELECTED, APP_NAME_TYPE } from 'src/app/shared/common/const';
+import { getDataLocalStorage, initializeAdMob, showAdMobBanner } from 'src/app/shared/common/utils';
 import { LoggedInGuard } from 'src/app/shared/guards/canActive';
-import { Data, DataResult, InternalPageResult } from 'src/app/shared/models/data';
+import { Data } from 'src/app/shared/models/data';
 import { Movie } from 'src/app/shared/models/movie';
 import { MovieService } from 'src/app/shared/services/movie.service';
 
@@ -32,7 +32,8 @@ export class HomePage implements OnInit {
     private router: Router,
     private movieService: MovieService,
     private alertController: AlertController
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.type = getDataLocalStorage(APP_NAME_TYPE);

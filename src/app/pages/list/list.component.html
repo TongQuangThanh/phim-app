@@ -12,14 +12,41 @@
   </ion-toolbar>
 </ion-header>
 <ion-content fullscreen="true">
-  <ion-row class="ion-margin">
-    <ion-col size="6" *ngFor="let item of movies; index as i" class="radius p-relative"
-      [routerLink]="['/phim', item.slug]">
-      <img [src]="item.thumb_url || '../../../assets/blank.jpg'" class="h-100 radius"
-        [attr.loading]="i % 10 > 4 ? 'lazy' : 'eager'" />
+  <ion-row class="ion-margin-horizontal">
+    <ion-col size="12" *ngFor="let item of movies; index as i" class="p-relative" [routerLink]="['/phim', item.slug]">
+      <ion-card class="radius">
+        <ion-card-header class="ion-no-padding">
+          <img class="curve-top" [src]="item.poster_url || item.thumb_url" (load)="loaded()" />
+          <ion-card-title class="ion-padding-horizontal text-ellipsis">{{ item.name }}</ion-card-title>
+          <ion-card-subtitle class="ion-padding-horizontal">{{ item.origin_name }}</ion-card-subtitle>
+        </ion-card-header>
+        <ion-card-content>
+          <div class="mb-05">
+            <ion-text class="mr-025">{{ item.year }}</ion-text> |
+            <ion-chip class="ion-no-margin px-05 py-0 ml-025 chip f-12" [color]="getStatusColor(item?.status)">
+              {{ getStatus(item?.status) }}
+            </ion-chip>
+            <br>
+            <ion-button class="ion-margin-end border-primary f-12 f-600 chip chip-select h-auto py-05" mode="ios"
+              color="primary" fill="outline" *ngFor="let i of item.category"
+              [routerLink]="['/tabs/explore', { genre: item.name }]">
+              {{ i.name }}
+            </ion-button>
+          </div>
+          <ion-text color="dark">
+            {{ parseHtmlToText(item.content) }}
+            <ion-button fill="clear" mode="ios"
+              class="ion-no-padding ion-no-margin height-unset vertical-middle f-12 f-600" outline="none">
+              chi tiết
+            </ion-button>
+          </ion-text>
+        </ion-card-content>
+      </ion-card>
+      <!-- <img [src]="item.poster_url || item.thumb_url || '../../../assets/blank.jpg'" class="h-100 radius"
+        [attr.loading]="i % 10 > 4 ? 'lazy' : 'eager'" (load)="loaded()" />
       <ion-button *ngIf="item.year" class="p-absolute year f-10 color-white ion-no-margin">
         {{ item.year }}
-      </ion-button>
+      </ion-button> -->
     </ion-col>
   </ion-row>
   <ion-infinite-scroll (ionInfinite)="getMovies($event)">

@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
+  appId: 'com.thnvn.caphephim',
   appName: 'phim-online',
   webDir: 'www',
   bundledWebRuntime: false

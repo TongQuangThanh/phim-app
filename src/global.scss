@@ -63,6 +63,10 @@ ion-toolbar {
   height: auto;
 }
 
+.h-30 {
+  height: 30%;
+}
+
 .h-100 {
   height: 100%;
 }
@@ -94,9 +98,19 @@ ion-toolbar {
   bottom: 0;
 }
 
+.curve-top {
+  border-radius: 0.5rem 0.5rem 0px 0px;
+  --border-radius: 0.5rem 0.5rem 0px 0px;
+}
+
 .curve {
   border-radius: 0.5rem;
   --border-radius: 0.5rem;
+}
+
+.radius-top {
+  border-radius: 1rem 1rem 0px 0px;
+  --border-radius: 1rem 1rem 0px 0px;
 }
 
 .radius {
@@ -139,6 +153,11 @@ ion-toolbar {
   --font-size: 40px;
 }
 
+.f-50 {
+  font-size: 50px;
+  --font-size: 50px;
+}
+
 .f-600 {
   font-weight: 600;
 }
@@ -152,6 +171,21 @@ ion-toolbar {
   --border-width: 2px !important;
 }
 
+.px-05 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.py-0 {
+  padding-top: 0rem;
+  padding-bottom: 0em;
+}
+
+.py-025 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
 .py-05 {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
@@ -162,12 +196,20 @@ ion-toolbar {
   padding-bottom: 0.75rem;
 }
 
+.ml-025 {
+  margin-left: 0.25rem;
+}
+
+.mr-025 {
+  margin-right: 0.25rem;
+}
+
 .mt-025 {
   margin-top: 0rem;
 }
 
 .mb-025 {
-  margin-bottom: 0rem;
+  margin-bottom: 0.25rem;
 }
 
 .m-05 {
@@ -281,4 +323,18 @@ ion-chip.chip-select {
     background-color: transparent;
     color: var(--ion-color-base);
   }
+}
+
+.text-light {
+  color: var(--ion-color-white);
+}
+
+.text-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+ion-chip.chip {
+  height: 1.25rem;
 }

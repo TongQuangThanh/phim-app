@@ -1,27 +1,29 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Country, Movie, MovieResult, ServerData } from 'src/app/shared/models/movie';
 import { MovieService } from 'src/app/shared/services/movie.service';
 import { AlertController, IonSlides, ModalController } from '@ionic/angular';
-import { getDataLocalStorage, getStatus, getStatusColor, setVideoPlayer } from 'src/app/shared/common/utils';
+import {
+  getDataLocalStorage, getStatus, getStatusColor, parseHtmlToText, setVideoPlayer, showAdMobVideo
+} from 'src/app/shared/common/utils';
 import { APP_NAME_STATUS, APP_NAME_TYPE, PLAYER_ID, slideOpts, TRAILER_ID } from 'src/app/shared/common/const';
-import { YoutubePlayer } from 'capacitor-youtube-player'; // Web version
 import { LoggedInGuard } from 'src/app/shared/guards/canActive';
 import { FullScreenComponent } from './full-screen/full-screen.component';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-movie',
   templateUrl: './movie.component.html',
   styleUrls: ['./movie.component.scss']
 })
-export class MovieComponent implements OnInit, OnDestroy {
+export class MovieComponent implements OnInit {
   @ViewChild('crew', { static: false }) swiperCrew?: IonSlides;
   @ViewChild('episode', { static: false }) swiperEpisode?: IonSlides;
   @ViewChild('more', { static: false }) swiperMore?: IonSlides;
   slug = '';
   isPlaying = false;
   movie: Movie;
-  episodes: ServerData[];
+  episodes: ServerData[] = [];
   showTimes = '';
   content = '';
   showAllContent = false;
@@ -33,14 +35,14 @@ export class MovieComponent implements OnInit, OnDestroy {
   status: any = [];
   segment = 'more';
   url = '';
-  dataLoaded = false;
+  trailerUrl: SafeResourceUrl;
   counter = 0;
-  loadingText = 'Đang tải dữ liệu...';
   recommended: Movie[] = [];
   private handlerPlay: any;
 
   constructor(
     private router: Router,
+    private sanitizer: DomSanitizer,
     private movieService: MovieService,
     private modalCtrl: ModalController,
     private activatedRoute: ActivatedRoute,
@@ -48,7 +50,6 @@ export class MovieComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    console.log(this.slideOpts);
     this.type = getDataLocalStorage(APP_NAME_TYPE);
     this.status = getDataLocalStorage(APP_NAME_STATUS);
     this.activatedRoute.paramMap.subscribe((paramMap: ParamMap) => {
@@ -59,20 +60,19 @@ export class MovieComponent implements OnInit, OnDestroy {
         this.movie.actor = this.movie.actor.filter(a => a.trim());
         this.episodes = result.episodes[0].server_data;
         this.url = this.episodes[0].link_m3u8 || this.episodes[0].link_embed || this.movie?.trailer_url;
-        console.log(this.episodes);
 
-
-        this.parseHtmlToText(result.movie.content, true);
-        this.parseHtmlToText(result.movie.showtimes);
+        this.content = parseHtmlToText(result.movie.content);
+        this.showTimes = parseHtmlToText(result.movie.showtimes);
 
         const player: any = await setVideoPlayer();
         this.videoPlayer = player.plugin;
         this.handlerPlay = await this.videoPlayer.addListener('jeepCapVideoPlayerPlay', () => this.isPlaying = true, false);
         this.initPlayer(this.url, PLAYER_ID, 1, 3);
-        this.loadingText = 'Khởi tạo trình xem phim...';
         if (this.movie?.trailer_url) {
           if (this.movie?.trailer_url.includes('youtu')) {
-            this.initYoutubePlayer(TRAILER_ID, this.movie?.trailer_url.split('v=')[1], true);
+            //  https://www.youtube.com/watch?v=Vv-7epBIpqE     https://www.youtube.com/embed/Vv-7epBIpqE
+            const trailerUrl = this.movie?.trailer_url.replace('watch?v=', 'embed/');
+            this.trailerUrl = this.sanitizer.bypassSecurityTrustResourceUrl(trailerUrl);
           } else {
             this.initPlayer(this.movie?.trailer_url, TRAILER_ID, 3, 9);
           }
@@ -80,31 +80,17 @@ export class MovieComponent implements OnInit, OnDestroy {
         const category = this.movie?.category.map(c => c.name) || [];
         this.movieService.getRecommended(category).subscribe(res => {
           this.recommended = res.data as Movie[];
-          this.swiperCrew.update();
-          this.swiperEpisode.update();
-          this.swiperMore.update();
+          if (this.swiperCrew) {
+            this.swiperCrew.update();
+          }
+          if (this.swiperEpisode) {
+            this.swiperEpisode.update();
+          }
+          if (this.swiperMore) {
+            this.swiperMore.update();
+          }
         });
       });
-    });
-  }
-
-  parseHtmlToText(html: string, isContent?: boolean) {
-    const span = document.createElement('span');
-    span.innerHTML = html;
-    if (isContent) {
-      this.content = span.textContent || span.innerText;
-    } else {
-      this.showTimes = span.textContent || span.innerText;
-    }
-  }
-
-  async initYoutubePlayer(playerId: string, videoId: string, isTrailer?: boolean) {
-    await YoutubePlayer.initialize({
-      playerId, videoId,
-      playerSize: {
-        width: document.body.clientWidth - (isTrailer ? 32 : 0),
-        height: document.body.clientHeight / (isTrailer ? 4 : 3)
-      }
     });
   }
 
@@ -113,7 +99,6 @@ export class MovieComponent implements OnInit, OnDestroy {
       mode: 'embedded', url, playerId, componentTag: 'app-movie',
       width: document.body.clientWidth / widthRate, height: document.body.clientHeight / heightRate
     });
-    this.dataLoaded = true;
   }
 
   addToFavorite() {
@@ -168,8 +153,12 @@ export class MovieComponent implements OnInit, OnDestroy {
     this.segment = ev.detail.value;
   }
 
-  async ngOnDestroy() {
-    await this.videoPlayer.stopAllPlayers();
+  async rewardVideo(): Promise<void> {
+    showAdMobVideo();
+  }
+
+  ionViewWillLeave() {
+    this.videoPlayer.stopAllPlayers();
     this.handlerPlay.remove();
   }
 }

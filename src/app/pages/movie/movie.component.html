@@ -1,12 +1,5 @@
 <ion-content>
-  <ion-row *ngIf="!dataLoaded" class="h-100 w-100 ion-align-items-center ion-justify-content-center">
-    <ion-text color="primary" class="ion-text-center">
-      {{ loadingText }}
-      <br>
-      <ion-spinner color="primary" class="mt-05"></ion-spinner>
-    </ion-text>
-  </ion-row>
-  <div class="h-100 d-flex flex-column" [class.ion-hide]="!dataLoaded">
+  <div class="h-100 d-flex flex-column">
     <ion-header [translucent]="true" class="ion-no-border p-absolute">
       <ion-toolbar class="bg-transparent">
         <ion-buttons slot="start">
@@ -34,20 +27,20 @@
         {{ item.name }}
       </ion-button>
       <ion-row class="ion-justify-content-between">
-        <ion-col size="6">
-          <ion-button (click)="play()" mode="ios" shape="round" fill="solid" expand="block"
-            class="color-white ion-margin-end f-500">
+        <ion-col size="12">
+          <ion-button *ngIf="movie?.status !== 'status'" (click)="rewardVideo()" mode="ios" shape="round" fill="solid"
+            expand="block" class="color-white ion-margin-end f-500" [class.ion-hide]="isPlaying">
             <ion-icon slot="start" ios="play-circle-outline" md="play-circle-sharp"></ion-icon>
             Xem phim
           </ion-button>
         </ion-col>
-        <ion-col size="6">
-          <!-- <ion-button (click)="addToFavorite()" mode="ios" shape="round" fill="outline" expand="block"
+        <!-- <ion-col size="6">
+          <ion-button (click)="addToFavorite()" mode="ios" shape="round" fill="outline" expand="block"
             class="f-500 border-2">
             <ion-icon slot="start" ios="add-circle-outline" md="add-circle-sharp"></ion-icon>
             Yêu thích
-          </ion-button> -->
-        </ion-col>
+          </ion-button>
+        </ion-col> -->
       </ion-row>
       <br>
 
@@ -90,7 +83,7 @@
       </ion-slides>
 
 
-      <div *ngIf="movie?.type === type.series && (this.episodes[0].link_m3u8 || this.episodes[0].link_embed)">
+      <div *ngIf="this.episodes.length > 1 && (this.episodes[0].link_m3u8 || this.episodes[0].link_embed)">
         <ion-row class="ion-justify-content-between ion-margin-vertical">
           <div>
             <ion-title class="ion-no-padding">Episodes</ion-title>
@@ -119,7 +112,7 @@
     </div>
 
 
-    <div class="ion-margin grow-1 ion-padding-bottom">
+    <div class="ion-margin-horizontal grow-1 ion-padding-bottom">
       <ion-segment (ionChange)="segmentChanged($event)" [value]="segment" class="ion-margin-bottom" mode="md">
         <ion-segment-button value="more" class="ion-no-margin">
           <ion-label class="ion-text-capitalize f-16 f-600 ion-no-margin">Đề xuất</ion-label>
@@ -136,12 +129,16 @@
       </ion-segment>
 
       <div [class.ion-hide]="segment !== 'trailers'" class="ion-text-center">
-        <div class="ion-text-center" [id]="trailerId">Đang cập nhật</div>
+        <div class="ion-text-center" [class.ion-hide]="trailerUrl" [id]="trailerId">Đang cập nhật</div>
+        <iframe class="w-100 h-100" *ngIf="trailerUrl" [src]="trailerUrl" title="YouTube video player"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          frameborder="0" allowfullscreen></iframe>
       </div>
-      <div [class.ion-hide]="segment !== 'more'" class="h-100">
+      <div [class.ion-hide]="segment !== 'more'">
         <ion-slides #more [options]="slideOpts" class="ion-margin-start" [attr.virtual]="true">
-          <ion-slide *ngFor="let item of recommended" [routerLink]="['/phim', item.slug]">
-            <img [src]="item.thumb_url" class="radius" />
+          <ion-slide *ngFor="let item of recommended" class="flex-column" [routerLink]="['/phim', item.slug]">
+            <img [src]="item.poster_url || movie?.thumb_url" class="radius" />
+            <ion-text color="white" class="text-ellipsis f-14 mt-05 w-100">{{ item?.name }}</ion-text>
           </ion-slide>
         </ion-slides>
       </div>

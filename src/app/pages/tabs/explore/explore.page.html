@@ -27,7 +27,7 @@
   <div *ngIf="movies.length > 0">
     <ion-row *ngFor="let movie of movies" class="ion-margin-top flex-no-wrap" [routerLink]="['/phim', movie.slug]"
       routerLinkActive="router-link-active">
-      <ion-img class="radius thumb ion-margin-end" [src]="movie.thumb_url"></ion-img>
+      <ion-img class="radius thumb ion-margin-end" [src]="movie.poster_url || movie?.thumb_url"></ion-img>
       <ion-row class="flex-column">
         <div class="">{{ movie.name }}</div>
         <ion-text class="f-12 grow-1" color="medium">{{ movie.year }}</ion-text>

@@ -1,9 +1,13 @@
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
+import {
+  AdLoadInfo, AdMob, AdMobBannerSize, AdMobRewardItem, BannerAdOptions,
+  BannerAdPluginEvents, BannerAdPosition, BannerAdSize, RewardAdOptions, RewardAdPluginEvents
+} from '@capacitor-community/admob';
 import { Capacitor } from '@capacitor/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, isPlatform } from '@ionic/angular';
 import { CapacitorVideoPlayer } from 'capacitor-video-player';
-import { APP_NAME_TOKEN } from './const';
+import { adBannerAndroid, adVideoAndroid, APP_NAME_TOKEN } from './const';
 
 export const setVideoPlayer = async (): Promise<any> => {
   const platform = Capacitor.getPlatform();
@@ -46,4 +50,76 @@ export const alertLogin = async (alertController: AlertController, router: Route
     ]
   });
   await alert.present();
+};
+
+export const parseHtmlToText = (html: string) => {
+  const span = document.createElement('span');
+  span.innerHTML = html;
+  return span.textContent || span.innerText;
+};
+
+export const initializeAdMob = async (): Promise<void> => {
+  const { status } = await AdMob.trackingAuthorizationStatus();
+  console.log(status);
+  if (status === 'notDetermined') {
+    /**
+     * If you want to explain TrackingAuthorization before showing the iOS dialog,
+     * you can show the modal here.
+     * ex)
+     * const modal = await this.modalCtrl.create({
+     *   component: RequestTrackingPage,
+     * });
+     * await modal.present();
+     * await modal.onDidDismiss();  // Wait for close modal
+     **/
+  }
+
+  AdMob.initialize({
+    requestTrackingAuthorization: true,
+    // testingDevices: ['2077ef9a63d2b398840261c8221a0c9b'],
+    // initializeForTesting: true,
+  });
+};
+
+export const showAdMobBanner = async () => {
+  AdMob.addListener(BannerAdPluginEvents.Loaded, () => {
+    // Subscribe Banner Event Listener
+  });
+
+  AdMob.addListener(BannerAdPluginEvents.SizeChanged, (size: AdMobBannerSize) => {
+    // Subscribe Change Banner Size
+  });
+
+  const options: BannerAdOptions = {
+    adId: isPlatform('ios') ? '' : adBannerAndroid,
+    adSize: BannerAdSize.BANNER,
+    position: BannerAdPosition.BOTTOM_CENTER,
+    margin: 0,
+    // isTesting: true
+    // npa: true
+  };
+  AdMob.showBanner(options);
+};
+
+export const showAdMobVideo = async () => {
+  AdMob.addListener(RewardAdPluginEvents.Loaded, (info: AdLoadInfo) => {
+    // Subscribe prepared rewardVideo
+  });
+
+  AdMob.addListener(RewardAdPluginEvents.Rewarded, (adRewardItem: AdMobRewardItem) => {
+    // Subscribe user rewarded
+    console.log(rewardItem, adRewardItem);
+  });
+
+  const options: RewardAdOptions = {
+    adId: isPlatform('ios') ? '' : adVideoAndroid,
+    // isTesting: true
+    // npa: true
+    // ssv: {
+    //   userId: "A user ID to send to your SSV"
+    //   customData: JSON.stringify({ ...MyCustomData })
+    //}
+  };
+  await AdMob.prepareRewardVideoAd(options);
+  const rewardItem = await AdMob.showRewardVideoAd();
 };

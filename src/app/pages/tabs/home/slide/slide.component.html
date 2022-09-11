@@ -3,7 +3,22 @@
   <ion-button class="f-600" mode="ios" fill="clear" [routerLink]="['/danh-sach', urlPath]">Xem thêm</ion-button>
 </ion-row>
 <ion-slides [options]="slideOpts" class="ion-margin-start">
-  <ion-slide *ngFor="let item of movies" [routerLink]="['/phim', item.slug]">
-    <img [src]="item.thumb_url" class="radius" />
+  <ion-slide class="flex-column ion-align-items-start ion-text-start f-12" *ngFor="let item of movies"
+    [routerLink]="['/phim', item.slug]">
+    <img class="curve-top" [src]="item.poster_url || item.thumb_url" (load)="loaded()" />
+    <h6 class="text-ellipsis w-100">{{ item.name }}</h6>
+    <div class="mb-05">
+      <ion-text class="mr-025">{{ item.year }}</ion-text> |
+      <ion-chip class="ion-no-margin px-05 py-0 ml-025 chip f-12" [color]="getStatusColor(item?.status)">
+        {{ getStatus(item?.status) }}
+      </ion-chip>
+    </div>
+    <ion-text color="dark">
+      {{ parseHtmlToText(item.content) }}
+      <ion-button fill="clear" mode="ios" class="ion-no-padding ion-no-margin height-unset vertical-middle f-12 f-600"
+        outline="none">
+        chi tiết
+      </ion-button>
+    </ion-text>
   </ion-slide>
 </ion-slides>

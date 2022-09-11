@@ -3,7 +3,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { IonInfiniteScroll } from '@ionic/angular';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { APP_NAME_CATEGORY_SELECTED, type } from 'src/app/shared/common/const';
-import { getDataLocalStorage } from 'src/app/shared/common/utils';
+import { getDataLocalStorage, getStatus, getStatusColor, parseHtmlToText } from 'src/app/shared/common/utils';
 import { InternalPageResult } from 'src/app/shared/models/data';
 import { Movie } from 'src/app/shared/models/movie';
 import { MovieService } from 'src/app/shared/services/movie.service';
@@ -30,27 +30,35 @@ export class ListComponent implements OnInit {
       this.page = paramMap.get('id');
       this.title = type.find(t => t.url === this.page).title;
       this.getMovies();
+      this.ngxService.start();
     });
-  }
-
-  ionViewWillEnter() {
-    this.ngxService.start();
   }
 
   loaded() {
     this.imgLoaded++;
     if (this.imgLoaded === this.movies.length && this.movies.length > 0) {
       this.ngxService.stop();
-      console.log(1, this.imgLoaded);
     }
-    console.log(this.imgLoaded);
+  }
+
+  parseHtmlToText(html: string) {
+    return html.length > 150 ? parseHtmlToText(html).slice(0, 150) + '...' : parseHtmlToText(html);
+  }
+
+  getStatusColor(status: string) {
+    return getStatusColor(status);
+  }
+
+  getStatus(status: string) {
+    return getStatus(status);
   }
 
   getMovies(event?: any) {
     this.pageNumber++;
-    this.movieService.getMoviesInternal(this.page, this.pageNumber, this.selectedGenres).subscribe(result => {
+    this.movieService.getMoviesInternal(this.pageNumber, this.selectedGenres, this.page).subscribe(result => {
       const data = result.data as InternalPageResult;
       this.movies = this.movies.concat(data.movies);
+      console.log(this.movies);
       if (event) {
         event.target.complete();
         if (this.pageNumber === data.allPage) {

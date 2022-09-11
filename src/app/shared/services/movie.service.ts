@@ -38,9 +38,9 @@ export class MovieService {
 
   }
 
-  getMoviesInternal(urlPath: string, page?: number, prefer?: string): Observable<DataResult> {
+  getMoviesInternal(page?: number, prefer?: string, urlPath?: string): Observable<DataResult> {
     const query = `?page=${page || 1}&limit=${defaultLimit || 1}&prefer=${prefer}`;
-    return this.http.get<DataResult>(`${internalURL}/danh-sach/${urlPath}${query}`);
+    return this.http.get<DataResult>(`${internalURL}/danh-sach/${urlPath || 'all'}${query}`);
   }
 
   search(str?: string, type?: string, genre?: string, country?: string, status?: string, from?: number, to?: number, page?: number) {
@@ -51,7 +51,7 @@ export class MovieService {
   }
 
   getRecommended(category: string[], prefer?: string): Observable<DataResult> {
-    return this.http.get<DataResult>(`${internalURL}/de-xuat?limit=10&category=${category}&prefer=${prefer}`);
+    return this.http.get<DataResult>(`${internalURL}/de-xuat?limit=${defaultLimit}&category=${category}&prefer=${prefer}`);
   }
 }
 
