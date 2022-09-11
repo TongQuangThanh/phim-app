@@ -33,6 +33,13 @@ export class HomePage implements OnInit {
     private movieService: MovieService,
     private alertController: AlertController
   ) {
+    this.initAd();
+    console.log('innit ad');
+    showAdMobBanner();
+  }
+
+  async initAd() {
+    await initializeAdMob();
   }
 
   ngOnInit() {

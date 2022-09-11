@@ -7,7 +7,7 @@ import {
 import { Capacitor } from '@capacitor/core';
 import { AlertController, isPlatform } from '@ionic/angular';
 import { CapacitorVideoPlayer } from 'capacitor-video-player';
-import { adBannerAndroid, adVideoAndroid, APP_NAME_TOKEN } from './const';
+import { adBannerAndroid, adBannerIos, adVideoAndroid, adVideoIos, APP_NAME_TOKEN } from './const';
 
 export const setVideoPlayer = async (): Promise<any> => {
   const platform = Capacitor.getPlatform();
@@ -91,8 +91,8 @@ export const showAdMobBanner = async () => {
   });
 
   const options: BannerAdOptions = {
-    adId: isPlatform('ios') ? '' : adBannerAndroid,
-    adSize: BannerAdSize.BANNER,
+    adId: isPlatform('ios') ? adBannerIos : adBannerAndroid,
+    adSize: BannerAdSize.ADAPTIVE_BANNER,
     position: BannerAdPosition.BOTTOM_CENTER,
     margin: 0,
     // isTesting: true
@@ -112,7 +112,7 @@ export const showAdMobVideo = async () => {
   });
 
   const options: RewardAdOptions = {
-    adId: isPlatform('ios') ? '' : adVideoAndroid,
+    adId: isPlatform('ios') ? adVideoIos : adVideoAndroid,
     // isTesting: true
     // npa: true
     // ssv: {

@@ -12,8 +12,8 @@ export const APP_NAME_BANDWIDTH = APP_NAME + 'bandwidth';
 export const APP_NAME_CATEGORY_SELECTED = APP_NAME + 'category_selected';
 
 export const url = 'https://ophim1.com';
-export const internalURL = 'http://localhost:3080';
-// export const internalURL = 'https://phim-be.herokuapp.com';
+// export const internalURL = 'http://localhost:3080';
+export const internalURL = 'https://phim-be.herokuapp.com';
 
 export const PLAYER_ID = 'movie-player-id';
 export const TRAILER_ID = 'trailer-player-id';
@@ -21,6 +21,8 @@ export const TRAILER_ID = 'trailer-player-id';
 export const defaultShowChip = 5;
 export const defaultLimit = 10;
 
+export const adBannerIos = 'ca-app-pub-1861772573153532/5918343105';
+export const adVideoIos = 'ca-app-pub-1861772573153532/4517631523';
 export const adBannerAndroid = 'ca-app-pub-1861772573153532/5968683681';
 export const adVideoAndroid = 'ca-app-pub-1861772573153532/8240689465';
 
