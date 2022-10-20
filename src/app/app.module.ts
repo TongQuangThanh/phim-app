@@ -16,17 +16,18 @@ import { ErrorInterceptor } from './shared/interceptor/error-interceptor';
 import { GenreComponent } from './pages/genre/genre.component';
 import { ListComponent } from './pages/list/list.component';
 import { MovieComponent } from './pages/movie/movie.component';
+import { FullScreenComponent } from './pages/movie/full-screen/full-screen.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, ErrorComponent, GenreComponent, MovieComponent, ListComponent],
+  declarations: [AppComponent, LoginComponent, ErrorComponent, GenreComponent, MovieComponent, ListComponent, FullScreenComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    NgxUiLoaderModule,
-    NgxUiLoaderHttpModule.forRoot({ showForeground: true })
+    NgxUiLoaderModule.forRoot({ maxTime: 2000 }),
+    NgxUiLoaderHttpModule.forRoot({ showForeground: true, maxTime: 2000 })
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

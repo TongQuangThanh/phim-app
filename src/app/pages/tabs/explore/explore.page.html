@@ -1,9 +1,9 @@
 <ion-header [translucent]="true" class="ion-no-border" *ngIf="movies.length > 0">
-  <ion-toolbar>
-    <ion-title>Kết quả tìm kiếm</ion-title>
+  <ion-toolbar color="light">
+    <ion-title color="light">Kết quả tìm kiếm</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="movies = []">
-        <ion-icon slot="icon-only" ios="close-circle-outline" md="close-circle-sharp"></ion-icon>
+        <ion-icon slot="icon-only" ios="close-circle-outline" md="close-circle-sharp" color="light"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -11,13 +11,13 @@
 
 <ion-content class="ion-padding">
   <ion-item lines="none" class="radius">
-    <ion-input [(ngModel)]="str" placeholder="Tìm theo tên, đạo diễn, diễn viên..."></ion-input>
-    <ion-icon ios="search-outline" md="search-sharp" slot="end" (click)="search()"></ion-icon>
+    <ion-input color="light" [(ngModel)]="str" placeholder="Tìm theo tên, đạo diễn, diễn viên..."></ion-input>
+    <ion-icon color="light" ios="search-outline" md="search-sharp" slot="end" (click)="search()"></ion-icon>
   </ion-item>
   <div class="ion-margin ion-padding-vertical">
     <ion-row class="ion-justify-content-center ion-align-items-center">
       <div class="line ion-margin-end"></div>
-      <span>{{ movies.length > 0 ? 'Kết quả tìm kiếm' : 'hoặc' }}</span>
+      <ion-text color="light">{{ movies.length > 0 ? 'Kết quả tìm kiếm' : 'hoặc' }}</ion-text>
       <div class="line ion-margin-start"></div>
     </ion-row>
     <ion-button *ngIf="movies.length === 0" (click)="openModal()" expand="block" fill="clear" shape="round" mode="ios">
@@ -42,5 +42,13 @@
       <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Đang tải phim...">
       </ion-infinite-scroll-content>
     </ion-infinite-scroll>
+  </div>
+  <div *ngIf="hint.length > 0 && movies.length === 0">
+    <ion-title color="light">Gợi ý cho bạn</ion-title>
+    <ion-list>
+      <ion-item *ngFor="let item of hint">
+        <ion-label color="light">{{ item.name }}</ion-label>
+      </ion-item>
+    </ion-list>
   </div>
 </ion-content>

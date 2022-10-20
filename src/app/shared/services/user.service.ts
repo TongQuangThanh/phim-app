@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { internalURL } from '../common/const';
 import { DataResult } from '../models/data';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
+  public exit = new Subject<string>(); // Observable string sources
+  exit$ = this.exit.asObservable(); // Observable string streams
 
   constructor(private http: HttpClient) { }
 

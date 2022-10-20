@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AdMob, AdMobBannerSize, BannerAdPluginEvents } from '@capacitor-community/admob';
+import { PluginListenerHandle } from '@capacitor/core/types/definitions';
+import { Platform } from '@ionic/angular';
 import {
   APP_NAME_TYPE,
   APP_NAME_STATUS,
@@ -7,7 +10,6 @@ import {
   APP_NAME_TYPE_ARR,
   APP_NAME_STATUS_ARR
 } from './shared/common/const';
-import { Movie } from './shared/models/movie';
 import { MovieService } from './shared/services/movie.service';
 
 @Component({
@@ -16,7 +18,15 @@ import { MovieService } from './shared/services/movie.service';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  constructor(private movieService: MovieService) { }
+  listenerHandlers: PluginListenerHandle[] = [];
+  /**
+   * Height of AdSize
+   */
+  appMargin = 0;
+  constructor(private movieService: MovieService, private platform: Platform) {
+    this.initializeApp();
+  }
+
   ngOnInit() {
     this.movieService.getData().subscribe(result => {
       const data = result.data as any;
@@ -82,5 +92,40 @@ export class AppComponent implements OnInit {
       localStorage.setItem(APP_NAME_STATUS_ARR, JSON.stringify(arr));
     }
     localStorage.setItem(key, JSON.stringify(obj));
+  }
+
+  async ionViewWillEnter() {
+    /**
+     * Run every time the Ad height changes.
+     * AdMob cannot be displayed above the content, so create margin for AdMob.
+     */
+    const resizeHandler = AdMob.addListener(BannerAdPluginEvents.SizeChanged, (info: AdMobBannerSize) => {
+      this.appMargin = info.height;
+      const app: HTMLElement = document.querySelector('ion-router-outlet');
+      if (this.appMargin === 0) {
+        app.style.marginBottom = '';
+        return;
+      }
+      if (this.appMargin > 0) {
+        const body = document.querySelector('body');
+        const bodyStyles = window.getComputedStyle(body);
+        const safeAreaBottom = bodyStyles.getPropertyValue('--ion-safe-area-bottom');
+        app.style.marginBottom = `calc(${safeAreaBottom} + ${this.appMargin}px)`;
+      }
+    });
+    this.listenerHandlers.push(resizeHandler);
+  }
+
+  ionViewWillLeave() {
+    this.listenerHandlers.forEach(handler => handler.remove());
+  }
+
+  initializeApp() {
+    this.platform.ready().then(async () => {
+      await AdMob.initialize({
+        requestTrackingAuthorization: true,
+        initializeForTesting: true,
+      });
+    });
   }
 }

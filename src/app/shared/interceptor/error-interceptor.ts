@@ -15,7 +15,7 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   async showError(error: HttpErrorResponse) {
     this.alertController.getTop().then(async isAlert => {
-      console.log(isAlert);
+      console.error(isAlert);
       if (!isAlert) {
         const alert = await this.alertController.create({
           header: 'Lỗi!!!',

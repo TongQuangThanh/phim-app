@@ -4,6 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { APP_NAME_TYPE_ARR, APP_NAME_STATUS_ARR, defaultShowChip } from 'src/app/shared/common/const';
 import { getDataLocalStorage, getStatus, getStatusColor } from 'src/app/shared/common/utils';
 import { InternalPageResult } from 'src/app/shared/models/data';
+import { PageResult } from 'src/app/shared/models/page';
 import { MovieService } from 'src/app/shared/services/movie.service';
 import { FilterComponent } from './filter/filter.component';
 
@@ -33,6 +34,7 @@ export class ExplorePage implements OnInit {
   from = 1900;
   to = new Date().getFullYear();
   movies = [];
+  hint = [];
   showFilter = true;
   pageNumber = 0;
   constructor(
@@ -51,6 +53,10 @@ export class ExplorePage implements OnInit {
         this.selectedGenres = [genre];
         this.search();
       }
+
+      this.movieService.getMovies().subscribe((result: PageResult) => {
+        this.hint = result.items;
+      });
     });
   }
 

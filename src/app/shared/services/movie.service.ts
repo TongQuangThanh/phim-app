@@ -10,8 +10,8 @@ import { DataResult, HomeResult } from '../models/data';
 export class MovieService {
   constructor(private http: HttpClient) { }
 
-  getMovies(page: number): Observable<PageResult> {
-    return this.http.get<PageResult>(`${url}/danh-sach/phim-moi-cap-nhat?page=${page}`);
+  getMovies(page?: number): Observable<PageResult> {
+    return this.http.get<PageResult>(`${url}/danh-sach/phim-moi-cap-nhat?page=${page || 1}`);
   }
 
   getMovie(slug: string): Observable<MovieResult> {

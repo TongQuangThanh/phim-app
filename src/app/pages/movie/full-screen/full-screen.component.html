@@ -1,13 +1,7 @@
 <ion-content>
   <!-- Mandatory id="fullscreen" -->
-  <div
-    id="fullscreen"
-    slot="fixed"
-  ></div>
-  <ion-row
-    *ngIf="!isSuccess"
-    class="w-100 h-100 ion-justify-content-center ion-align-items-center"
-  >
+  <div id="fullscreen" slot="fixed"></div>
+  <ion-row *ngIf="!isSuccess" class="w-100 h-100 ion-justify-content-center ion-align-items-center">
     <div class="ion-text-center">
       <ion-text color="primary">
         <h1>Oops!!!</h1>
@@ -21,10 +15,7 @@
         Trở về trang trước sau
         <div class="bg-transparent p-relative countdown ion-margin-top mx-auto">
           {{ counter }}
-          <div
-            class="timer countdown"
-            [style]="'--duration: ' + timer"
-          >
+          <div class="timer countdown" [style]="'--duration: ' + timer">
             <div class="mask"></div>
           </div>
         </div>

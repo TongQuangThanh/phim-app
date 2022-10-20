@@ -149,8 +149,8 @@ ion-toolbar {
 }
 
 .f-40 {
-  font-size: 40px;
-  --font-size: 40px;
+  font-size: 32px;
+  --font-size: 32px;
 }
 
 .f-50 {
@@ -288,7 +288,7 @@ ion-item::part(native),
   --ripple-color: transparent;
 }
 
-ion-modal {
+ion-modal:not(.full-screen) {
   &::part(content) {
     bottom: 0;
     max-height: 85vh;

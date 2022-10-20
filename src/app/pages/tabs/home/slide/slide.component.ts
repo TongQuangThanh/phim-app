@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { slideOpts } from 'src/app/shared/common/const';
-import { getStatus, getStatusColor, initializeAdMob, parseHtmlToText, showAdMobBanner } from 'src/app/shared/common/utils';
+import { getStatus, getStatusColor, parseHtmlToText } from 'src/app/shared/common/utils';
 import { Movie } from 'src/app/shared/models/movie';
 
 @Component({
@@ -20,16 +20,13 @@ export class SlideComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.ngxService.start();
-    await initializeAdMob();
-    console.log('innit ad');
-    showAdMobBanner();
+    // this.ngxService.start();
   }
 
   loaded() {
     this.imgLoaded++;
     if (this.imgLoaded === this.movies.length && this.movies.length > 0) {
-      this.ngxService.stop();
+      // this.ngxService.stop();
     }
   }
 

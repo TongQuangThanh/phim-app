@@ -105,3 +105,5 @@ export const slideOpts: SlideOption = {
   }
 };
 
+// pw quangthanh94
+// alias key0

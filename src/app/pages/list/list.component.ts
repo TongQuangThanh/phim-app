@@ -58,7 +58,6 @@ export class ListComponent implements OnInit {
     this.movieService.getMoviesInternal(this.pageNumber, this.selectedGenres, this.page).subscribe(result => {
       const data = result.data as InternalPageResult;
       this.movies = this.movies.concat(data.movies);
-      console.log(this.movies);
       if (event) {
         event.target.complete();
         if (this.pageNumber === data.allPage) {
