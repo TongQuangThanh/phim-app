@@ -3,8 +3,8 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { Country, Movie, MovieResult, ServerData } from 'src/app/shared/models/movie';
 import { MovieService } from 'src/app/shared/services/movie.service';
 import { AlertController, IonSlides, isPlatform, ModalController } from '@ionic/angular';
-import { getDataLocalStorage, getStatus, getStatusColor, parseHtmlToText, setVideoPlayer } from 'src/app/shared/common/utils';
-import { APP_NAME_STATUS, APP_NAME_TYPE, PLAYER_ID, slideOpts, TRAILER_ID } from 'src/app/shared/common/const';
+import { getDataLocalStorage, getStatus, getStatusColor, parseHtmlToText } from 'src/app/shared/common/utils';
+import { adVideoAndroid, adVideoIos, APP_NAME_STATUS, APP_NAME_TYPE, PLAYER_ID, slideOpts, TRAILER_ID } from 'src/app/shared/common/const';
 import { LoggedInGuard } from 'src/app/shared/guards/canActive';
 import { FullScreenComponent } from './full-screen/full-screen.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -31,7 +31,7 @@ export class MovieComponent implements OnInit {
   content = '';
   showAllContent = false;
   slideOpts = slideOpts;
-  slideOptsCrew = { ...slideOpts, slidesPerView: 2.25, breakpoints: {} };
+  slideOptsCrew = { ...slideOpts, slidesPerView: 1.75, breakpoints: {} };
   playerId = PLAYER_ID;
   trailerId = TRAILER_ID;
   type: any = {};
@@ -42,6 +42,7 @@ export class MovieComponent implements OnInit {
   counter = 0;
   recommended: Movie[] = [];
   isPrepareReward = false;
+  idx = 0;
   private readonly listenerHandlers: PluginListenerHandle[] = [];
 
   constructor(
@@ -56,9 +57,6 @@ export class MovieComponent implements OnInit {
       this.playFullScreen(this.url);
     });
     this.listenerHandlers.push(handler);
-    // const adId = isPlatform('ios') ? adVideoIos : adVideoAndroid;
-    const adId = 'ca-app-pub-3940256099942544/5224354917';
-    AdMob.prepareRewardVideoAd({ adId, isTesting: true });
   }
 
   ngOnInit() {
@@ -70,7 +68,7 @@ export class MovieComponent implements OnInit {
         this.movie.director = this.movie.director.filter(d => d.trim());
         this.movie.actor = this.movie.actor.filter(a => a.trim());
         this.episodes = result.episodes[0].server_data;
-        this.url = this.episodes[0].link_m3u8 || this.episodes[0].link_embed || this.movie?.trailer_url;
+        this.getUrl();
 
         this.content = parseHtmlToText(result.movie.content);
         this.showTimes = parseHtmlToText(result.movie.showtimes);
@@ -105,6 +103,10 @@ export class MovieComponent implements OnInit {
     });
   }
 
+  getUrl() {
+    this.url = this.episodes[this.idx].link_m3u8 || this.episodes[this.idx].link_embed || this.movie?.trailer_url;
+  }
+
   addToFavorite() {
     (new LoggedInGuard(this.router, this.alertController)).canActivate();
   }
@@ -134,8 +136,13 @@ export class MovieComponent implements OnInit {
         componentProps: { url },
         cssClass: 'full-screen'
       });
+      await modal.present();
+      const { data, role } = await modal.onWillDismiss();
+      if (data.ended && this.idx < (this.episodes.length - 1)) {
+        this.generateUrl();
+        this.playFullScreen(this.url);
+      }
     }
-    await modal.present();
   }
 
   getStatusColor(status: string) {
@@ -154,9 +161,25 @@ export class MovieComponent implements OnInit {
     this.segment = ev.detail.value;
   }
 
+  generateUrl() {
+    this.idx++;
+    this.getUrl();
+  }
+
+  playEpisode() {
+    this.generateUrl();
+    this.rewardVideo();
+  }
+
   async rewardVideo(): Promise<void> {
-    // this.playFullScreen(this.url);
-    AdMob.showRewardVideoAd();
+    try {
+      const adId = isPlatform('ios') ? adVideoIos : adVideoAndroid;
+      // const adId = 'ca-app-pub-3940256099942544/5224354917';
+      await AdMob.prepareRewardVideoAd({ adId });
+      AdMob.showRewardVideoAd();
+    } catch (error) {
+      this.playFullScreen(this.url);
+    }
   }
 
   async ionViewWillEnter() {

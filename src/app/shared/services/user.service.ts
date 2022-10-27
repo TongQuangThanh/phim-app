@@ -11,6 +11,10 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
+  exitApp() {
+    this.exit.next();
+  }
+
   login(email: string, password: string): Observable<DataResult> {
     return this.http.post<DataResult>(`${internalURL}/user/login`, { email, password });
   }

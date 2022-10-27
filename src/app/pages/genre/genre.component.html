@@ -1,24 +1,23 @@
 <ion-header [translucent]="true" class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/tabs/home"></ion-back-button>
+      <ion-back-button defaultHref="/tabs/home" color="light"></ion-back-button>
     </ion-buttons>
-    <ion-title class="f-600">Chọn Thể Loại Phim</ion-title>
+    <ion-title class="f-600" color="light">Chọn Thể Loại Phim</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content fullscreen="true">
   <ion-row class="flex-column h-100 ion-padding-start">
-    <div class="ion-margin-vertical ion-margin-end">
+    <ion-text color="light" class="ion-margin-vertical ion-margin-end">
       Chọn thể loại phim hoặc chương trình truyền hình mà bạn yêu thích. Bạn có thể chọn lại bất cứ lúc nào!
-    </div>
+    </ion-text>
     <div class="grow-1">
-      <ion-chip color="primary" class="mr-05 mx-05 my-075 f-700 border-2 chip-select ion-padding"
+      <ion-chip color="primary" class="ml-0 mr-075 my-075 f-700 border-2 chip-select ion-padding"
         [outline]="!selected.includes(item)" *ngFor="let item of genres" (click)="toggleItem(item)">
         <ion-label class="w-100 ion-text-center">{{ item }}</ion-label>
       </ion-chip>
     </div>
     <div class="ion-padding-vertical ion-margin-end">
-      <hr>
       <ion-row class="ion-padding-vertical">
         <ion-col size="6" class="ion-no-padding ion-padding-end">
           <ion-button class="f-600 color-white" shape="round" fill="solid" mode="ios" expand="block"

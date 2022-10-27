@@ -20,30 +20,21 @@ export class FullScreenComponent implements OnInit {
   async ngOnInit() {
     const player: any = await setVideoPlayer();
     this.videoPlayer = player.plugin;
-    this.handlerEnded = await this.videoPlayer.addListener('jeepCapVideoPlayerEnded', () => this.leaveModal(), false);
+    this.handlerEnded = await this.videoPlayer.addListener('jeepCapVideoPlayerEnded', () => this.leaveModal(true), false);
     this.handlerExit = await this.videoPlayer.addListener('jeepCapVideoPlayerExit', () => this.leaveModal(), false);
+    window.screen.orientation.lock('landscape');
     await this.videoPlayer.initPlayer({
       mode: 'fullscreen', url: this.url, playerId: 'fullscreen', loopOnEnd: false, exitOnEnd: true, componentTag: 'app-full-screen'
     });
-    // this.isSuccess = res.result.result;
-    // if (!this.isSuccess) {
-    //   const sItv = setInterval(() => {
-    //     if (this.counter === 0) {
-    //       clearInterval(sItv);
-    //       this.modalCtrl.dismiss({ dismissed: true });
-    //       this.counter = 5;
-    //     }
-    //     this.counter--;
-    //   }, 1000);
-    // }
   }
 
-  private async leaveModal(): Promise<void> {
+  private async leaveModal(ended?: boolean): Promise<void> {
+    window.screen.orientation.unlock();
     await this.videoPlayer.stopAllPlayers();
     // Remove all the plugin listeners
     this.handlerEnded.remove();
     this.handlerExit.remove();
     // Dismiss the modal view
-    this.modalCtrl.dismiss({ dismissed: true });
+    this.modalCtrl.dismiss({ dismissed: true, ended });
   }
 }

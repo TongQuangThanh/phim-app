@@ -1,11 +1,9 @@
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
-import { AdMob, AdMobRewardItem, BannerAdOptions, BannerAdPosition, BannerAdSize, RewardAdPluginEvents
-} from '@capacitor-community/admob';
 import { Capacitor } from '@capacitor/core';
-import { AlertController, isPlatform } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 import { CapacitorVideoPlayer } from 'capacitor-video-player';
-import { adBannerAndroid, adBannerIos, adVideoAndroid, adVideoIos, APP_NAME_TOKEN } from './const';
+import { APP_NAME_TOKEN } from './const';
 
 export const setVideoPlayer = async (): Promise<any> => {
   const platform = Capacitor.getPlatform();

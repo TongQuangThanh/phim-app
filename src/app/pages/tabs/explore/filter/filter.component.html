@@ -32,11 +32,11 @@
       passKey: 'status'
     }">
     </ng-container>
-    <ion-label class="f-600 f-18">Năm</ion-label>
+    <ion-label class="f-600 f-18" color="light">Năm</ion-label>
     <ion-row class="f-600 ion-margin-vertical">
       <ion-col size="6" class="ion-no-padding">
         <ion-row class="ion-align-items-center">
-          <ion-text>Từ</ion-text>
+          <ion-text color="light">Từ</ion-text>
           <ion-button class="ion-no-margin no-ripple" (click)="openPicker('from')" fill="clear">
             <div class="underline f-16 f-600">{{ from }}</div>
           </ion-button>
@@ -44,15 +44,15 @@
       </ion-col>
       <ion-col size="6" class="ion-no-padding">
         <ion-row class="ion-align-items-center">
-          <ion-text>đến</ion-text>
+          <ion-text color="light">đến</ion-text>
           <ion-button class="ion-no-margin no-ripple" (click)="openPicker('to')" fill="clear">
             <div class="underline f-16 f-600">{{ to }}</div>
           </ion-button>
         </ion-row>
       </ion-col>
     </ion-row>
-    <ion-label class="f-600 f-18">Sắp xếp</ion-label>
-    <hr>
+    <!-- <ion-label class="f-600 f-18" color="light">Sắp xếp</ion-label> -->
+    <!-- <hr> -->
     <ion-row>
       <ion-col size="6" class="ion-no-padding ion-padding-end">
         <ion-button class="f-600 color-white" shape="round" fill="solid" mode="ios" expand="block"
@@ -72,9 +72,9 @@
 <ng-template #filter let-title="passTitle" let-selected="passSelected" let-list="passList" let-key="passKey"
   let-show="passShow">
   <ion-row class="ion-justify-content-between ion-align-items-center">
-    <ion-label class="f-600 f-18">{{ title }}</ion-label>
+    <ion-label class="f-600 f-18" color="light">{{ title }}</ion-label>
     <ion-button *ngIf="list.length > defaultShowChip" (click)="showMore(key)" expand="block" fill="clear" shape="round"
-      mode="ios" class="f-600 f-16 ion-no-padding">
+      mode="ios" class="f-600 f-14 ion-no-padding">
       {{ show === defaultShowChip ? 'Hiện thêm' : 'Rút gọn' }}
     </ion-button>
   </ion-row>

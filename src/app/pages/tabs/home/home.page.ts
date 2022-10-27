@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { App } from '@capacitor/app';
-import { AlertController, IonRouterOutlet } from '@ionic/angular';
+import { AlertController, IonRouterOutlet, Platform } from '@ionic/angular';
 import { APP_NAME_BANDWIDTH, APP_NAME_CATEGORY_SELECTED, APP_NAME_TYPE } from 'src/app/shared/common/const';
 import { getDataLocalStorage } from 'src/app/shared/common/utils';
 import { LoggedInGuard } from 'src/app/shared/guards/canActive';
@@ -32,11 +32,13 @@ export class HomePage implements OnInit {
   selectedGenres = getDataLocalStorage(APP_NAME_CATEGORY_SELECTED) || [];
   constructor(
     private router: Router,
+    private platform: Platform,
     private userService: UserService,
     private movieService: MovieService,
     private routerOutlet: IonRouterOutlet,
     private alertController: AlertController,
   ) {
+    this.platform.backButton.subscribeWithPriority(-1, () => this.exitApp());
     userService.exit$.subscribe(() => this.exitApp());
   }
 

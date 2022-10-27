@@ -123,8 +123,7 @@ export class AppComponent implements OnInit {
   initializeApp() {
     this.platform.ready().then(async () => {
       await AdMob.initialize({
-        requestTrackingAuthorization: true,
-        initializeForTesting: true,
+        requestTrackingAuthorization: true
       });
     });
   }

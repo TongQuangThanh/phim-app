@@ -14,7 +14,7 @@
 <ion-content fullscreen="true">
   <ion-row class="ion-margin-horizontal">
     <ion-col size="12" *ngFor="let item of movies; index as i" class="p-relative" [routerLink]="['/phim', item.slug]">
-      <ion-card class="radius">
+      <ion-card class="radius" color="light">
         <ion-card-header class="ion-no-padding">
           <img class="curve-top" [src]="item.poster_url || item.thumb_url" (load)="loaded()" />
           <ion-card-title class="ion-padding-horizontal text-ellipsis">{{ item.name }}</ion-card-title>
@@ -26,12 +26,13 @@
             <ion-chip class="ion-no-margin px-05 py-0 ml-025 chip f-12" [color]="getStatusColor(item?.status)">
               {{ getStatus(item?.status) }}
             </ion-chip>
-            <br>
-            <ion-button class="ion-margin-end border-primary f-12 f-600 chip chip-select h-auto py-05" mode="ios"
-              color="primary" fill="outline" *ngFor="let i of item.category"
-              [routerLink]="['/tabs/explore', { genre: item.name }]">
-              {{ i.name }}
-            </ion-button>
+            <div class="mt-05">
+              <ion-button class="mr-075 border-primary f-12 f-600 chip chip-select h-auto ml-0" mode="ios"
+                color="primary" fill="outline" *ngFor="let i of item.category"
+                [routerLink]="['/tabs/explore', { genre: item.name }]">
+                {{ i.name }}
+              </ion-button>
+            </div>
           </div>
           <ion-text color="dark">
             {{ parseHtmlToText(item.content) }}

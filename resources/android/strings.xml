@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">phim-online</string>
+    <string name="title_activity_main">phim-online</string>
+    <string name="package_name">com.thnvn.caphephim</string>
+    <string name="custom_url_scheme">com.thnvn.caphephim</string>
+    <string name="admob_app_id">ca-app-pub-1861772573153532~9445959925</string>
+</resources>

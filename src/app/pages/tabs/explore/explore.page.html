@@ -1,5 +1,5 @@
 <ion-header [translucent]="true" class="ion-no-border" *ngIf="movies.length > 0">
-  <ion-toolbar color="light">
+  <ion-toolbar>
     <ion-title color="light">Kết quả tìm kiếm</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="movies = []">
@@ -10,28 +10,28 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-item lines="none" class="radius">
+  <ion-item lines="none" class="radius" *ngIf="movies.length === 0">
     <ion-input color="light" [(ngModel)]="str" placeholder="Tìm theo tên, đạo diễn, diễn viên..."></ion-input>
     <ion-icon color="light" ios="search-outline" md="search-sharp" slot="end" (click)="search()"></ion-icon>
   </ion-item>
-  <div class="ion-margin ion-padding-vertical">
+  <div class="ion-margin ion-padding-vertical" *ngIf="movies.length === 0">
     <ion-row class="ion-justify-content-center ion-align-items-center">
       <div class="line ion-margin-end"></div>
-      <ion-text color="light">{{ movies.length > 0 ? 'Kết quả tìm kiếm' : 'hoặc' }}</ion-text>
+      <ion-text color="light">hoặc</ion-text>
       <div class="line ion-margin-start"></div>
     </ion-row>
-    <ion-button *ngIf="movies.length === 0" (click)="openModal()" expand="block" fill="clear" shape="round" mode="ios">
+    <ion-button (click)="openModal()" expand="block" fill="clear" shape="round" mode="ios">
       Tìm kiếm nâng cao
     </ion-button>
   </div>
   <div *ngIf="movies.length > 0">
-    <ion-row *ngFor="let movie of movies" class="ion-margin-top flex-no-wrap" [routerLink]="['/phim', movie.slug]"
+    <ion-row *ngFor="let movie of movies" class="mb-2 flex-no-wrap" [routerLink]="['/phim', movie.slug]"
       routerLinkActive="router-link-active">
       <ion-img class="radius thumb ion-margin-end" [src]="movie.poster_url || movie?.thumb_url"></ion-img>
       <ion-row class="flex-column">
-        <div class="">{{ movie.name }}</div>
+        <ion-text color="light">{{ movie.name }}</ion-text>
         <ion-text class="f-12 grow-1" color="medium">{{ movie.year }}</ion-text>
-        <div class="ion-align-self-">
+        <div>
           <ion-chip class="ion-no-margin" [color]="getStatusColor(movie?.status)">
             {{ getStatus(movie?.status) }}
           </ion-chip>
@@ -44,10 +44,10 @@
     </ion-infinite-scroll>
   </div>
   <div *ngIf="hint.length > 0 && movies.length === 0">
-    <ion-title color="light">Gợi ý cho bạn</ion-title>
+    <ion-title color="light" class="ion-padding-horizontal">Gợi ý cho bạn</ion-title>
     <ion-list>
       <ion-item *ngFor="let item of hint">
-        <ion-label color="light">{{ item.name }}</ion-label>
+        <ion-label color="light" [routerLink]="['/phim', item.slug]">{{ item.name }}</ion-label>
       </ion-item>
     </ion-list>
   </div>

@@ -196,6 +196,10 @@ ion-toolbar {
   padding-bottom: 0.75rem;
 }
 
+.ml-0 {
+  margin-left: 0rem;
+}
+
 .ml-025 {
   margin-left: 0.25rem;
 }
@@ -204,12 +208,12 @@ ion-toolbar {
   margin-right: 0.25rem;
 }
 
-.mt-025 {
-  margin-top: 0rem;
-}
-
 .mb-025 {
   margin-bottom: 0.25rem;
+}
+
+.mb-2 {
+  margin-bottom: 2rem;
 }
 
 .m-05 {
@@ -245,6 +249,10 @@ ion-toolbar {
 
 .mr-05 {
   margin-right: 0.5rem;
+}
+
+.mr-075 {
+  margin-right: 0.75rem;
 }
 
 .my-auto {

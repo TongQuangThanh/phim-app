@@ -5,7 +5,7 @@
         <ion-buttons slot="start">
           <ion-back-button defaultHref="/tabs/home" color="light"></ion-back-button>
         </ion-buttons>
-        <ion-buttons slot="end">
+        <ion-buttons slot="end" routerLink="/tabs/explore">
           <ion-button>
             <ion-icon slot="icon-only" ios="search-outline" md="search-sharp" color="light"></ion-icon>
           </ion-button>
@@ -85,7 +85,7 @@
       <div *ngIf="this.episodes.length > 1 && (this.episodes[0].link_m3u8 || this.episodes[0].link_embed)">
         <ion-row class="ion-justify-content-between ion-margin-vertical">
           <div>
-            <ion-title class="ion-no-padding" color="medium">Episodes</ion-title>
+            <ion-title class="ion-no-padding" color="light">Episodes</ion-title>
           </div>
           <div>
             <!-- <ion-button id="click-trigger">Season</ion-button> -->
@@ -100,8 +100,8 @@
         <ion-slides #episode [options]="slideOpts" [attr.virtual]="true">
           <ion-slide *ngFor="let item of episodes; index as i">
             <div class="curve p-relative movie-title w-100">
-              <ion-icon ios="play-circle-outline" md="play-circle-sharp" class="p-absolute transform-center f-40" color="primary"
-                (click)="playFullScreen(item.link_m3u8 || item.link_embed)">
+              <ion-icon ios="play-circle-outline" md="play-circle-sharp" class="p-absolute transform-center f-40"
+                color="primary" (click)="playEpisode()">
               </ion-icon>
               <ion-text class="p-absolute bottom-left f-12" color="light">Ep. {{ i + 1 }}</ion-text>
             </div>
@@ -128,7 +128,8 @@
       </ion-segment>
 
       <div [class.ion-hide]="segment !== 'trailers'" class="ion-text-center">
-        <div class="ion-text-center" [class.ion-hide]="trailerUrl" [id]="trailerId" class="text-white">Đang cập nhật</div>
+        <ion-text class="ion-text-center" [class.ion-hide]="trailerUrl" [id]="trailerId" color="light">Đang cập nhật
+        </ion-text>
         <iframe class="w-100 h-100" *ngIf="trailerUrl" [src]="trailerUrl" title="YouTube video player"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           frameborder="0" allowfullscreen></iframe>
@@ -145,7 +146,9 @@
         <ion-row>
           <ion-col size="5">
             <ion-row class="ion-align-items-center h-100">
-              <ion-col size="12" class="ion-no-padding"><ion-text color="light">Trạng thái</ion-text></ion-col>
+              <ion-col size="12" class="ion-no-padding">
+                <ion-text color="light">Trạng thái</ion-text>
+              </ion-col>
             </ion-row>
           </ion-col>
           <ion-col size="7" class="ion-text-end">
@@ -155,32 +158,60 @@
           </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col size="5"><ion-text color="light">Tập mới nhất</ion-text></ion-col>
-          <ion-col size="7" class="ion-text-end"><ion-text color="light">{{ movie?.episode_current }}</ion-text></ion-col>
+          <ion-col size="5">
+            <ion-text color="light">Tập mới nhất</ion-text>
+          </ion-col>
+          <ion-col size="7" class="ion-text-end">
+            <ion-text color="light">{{ movie?.episode_current }}</ion-text>
+          </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col size="5"><ion-text color="light">Chất lượng</ion-text></ion-col>
-          <ion-col size="7" class="ion-text-end"><ion-text color="light">{{ movie?.quality || 'Đang cập nhật' }}</ion-text></ion-col>
+          <ion-col size="5">
+            <ion-text color="light">Chất lượng</ion-text>
+          </ion-col>
+          <ion-col size="7" class="ion-text-end">
+            <ion-text color="light">{{ movie?.quality || 'Đang cập nhật' }}</ion-text>
+          </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col size="5"><ion-text color="light">Thời lượng</ion-text></ion-col>
-          <ion-col size="7" class="ion-text-end"><ion-text color="light">{{ movie?.time || 'Đang cập nhật' }}</ion-text></ion-col>
+          <ion-col size="5">
+            <ion-text color="light">Thời lượng</ion-text>
+          </ion-col>
+          <ion-col size="7" class="ion-text-end">
+            <ion-text color="light">{{ movie?.time || 'Đang cập nhật' }}</ion-text>
+          </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col size="5"><ion-text color="light">Quốc gia</ion-text></ion-col>
-          <ion-col size="7" class="ion-text-end"><ion-text color="light">{{ getCountries(movie?.country) || 'Đang cập nhật' }}</ion-text></ion-col>
+          <ion-col size="5">
+            <ion-text color="light">Quốc gia</ion-text>
+          </ion-col>
+          <ion-col size="7" class="ion-text-end">
+            <ion-text color="light">{{ getCountries(movie?.country) || 'Đang cập nhật' }}</ion-text>
+          </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col size="5"><ion-text color="light">Năm sản xuất</ion-text></ion-col>
-          <ion-col size="7" class="ion-text-end"><ion-text color="light">{{ movie?.year || 'Đang cập nhật' }}</ion-text></ion-col>
+          <ion-col size="5">
+            <ion-text color="light">Năm sản xuất</ion-text>
+          </ion-col>
+          <ion-col size="7" class="ion-text-end">
+            <ion-text color="light">{{ movie?.year || 'Đang cập nhật' }}</ion-text>
+          </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col size="5"><ion-text color="light">Giờ chiếu</ion-text></ion-col>
-          <ion-col size="7" class="ion-text-end"><ion-text color="light">{{ showTimes || 'Đang cập nhật' }}</ion-text></ion-col>
+          <ion-col size="5">
+            <ion-text color="light">Giờ chiếu</ion-text>
+          </ion-col>
+          <ion-col size="7" class="ion-text-end">
+            <ion-text color="light">{{ showTimes || 'Đang cập nhật' }}</ion-text>
+          </ion-col>
         </ion-row>
         <ion-row>
-          <ion-col size="5"><ion-text color="light">Ngôn ngữ</ion-text></ion-col>
-          <ion-col size="7" class="ion-text-end"><ion-text color="light">{{ movie?.lang || 'Đang cập nhật' }}</ion-text></ion-col>
+          <ion-col size="5">
+            <ion-text color="light">Ngôn ngữ</ion-text>
+          </ion-col>
+          <ion-col size="7" class="ion-text-end">
+            <ion-text color="light">{{ movie?.lang || 'Đang cập nhật' }}</ion-text>
+          </ion-col>
         </ion-row>
       </div>
     </div>
