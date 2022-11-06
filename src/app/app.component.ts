@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AdMob, AdMobBannerSize, BannerAdPluginEvents } from '@capacitor-community/admob';
 import { PluginListenerHandle } from '@capacitor/core/types/definitions';
-import { Platform } from '@ionic/angular';
+import { AlertController, Platform } from '@ionic/angular';
 import {
   APP_NAME_TYPE,
   APP_NAME_STATUS,
@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
    * Height of AdSize
    */
   appMargin = 0;
-  constructor(private movieService: MovieService, private platform: Platform) {
+  constructor(private movieService: MovieService, private platform: Platform, private modalCtrl: AlertController) {
     this.initializeApp();
   }
 
@@ -122,6 +122,24 @@ export class AppComponent implements OnInit {
 
   initializeApp() {
     this.platform.ready().then(async () => {
+      const { status } = await AdMob.trackingAuthorizationStatus();
+      if (status === 'notDetermined') {
+        /**
+         * If you want to explain TrackingAuthorization before showing the iOS dialog,
+         * you can show the modal here.
+         * ex)
+         * const modal = await this.modalCtrl.create({
+         *   component: RequestTrackingPage,
+         * });
+         * await modal.present();
+         * await modal.onDidDismiss();  // Wait for close modal
+         **/
+        const modal = await this.modalCtrl.create({
+          message: 'Please approve ads for maintain our service',
+        });
+        await modal.present();
+        await modal.onDidDismiss();  // Wait for close modal
+      }
       await AdMob.initialize({
         requestTrackingAuthorization: true
       });
