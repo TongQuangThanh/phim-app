@@ -54,9 +54,9 @@ export class ExplorePage implements OnInit {
         this.search();
       }
 
-      this.movieService.getMovies().subscribe((result: PageResult) => {
-        this.hint = result.items;
-      });
+      // this.movieService.getMovies().subscribe((result: PageResult) => {
+      //   this.hint = result.items;
+      // });
     });
   }
 

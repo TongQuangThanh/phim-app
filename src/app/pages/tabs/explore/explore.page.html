@@ -25,12 +25,12 @@
     </ion-button>
   </div>
   <div *ngIf="movies.length > 0">
-    <ion-row *ngFor="let movie of movies" class="mb-2 flex-no-wrap" [routerLink]="['/phim', movie.slug]"
+    <ion-row *ngFor="let movie of movies" class="mb-2 flex-no-wrap" [routerLink]="['/phim', movie?.slug]"
       routerLinkActive="router-link-active">
-      <ion-img class="radius thumb ion-margin-end" [src]="movie.poster_url || movie?.thumb_url"></ion-img>
+      <ion-img class="radius thumb ion-margin-end" [src]="movie?.poster_url || movie?.thumb_url"></ion-img>
       <ion-row class="flex-column">
-        <ion-text color="light">{{ movie.name }}</ion-text>
-        <ion-text class="f-12 grow-1" color="medium">{{ movie.year }}</ion-text>
+        <ion-text color="light">{{ movie?.name }}</ion-text>
+        <ion-text class="f-12 grow-1" color="medium">{{ movie?.year }}</ion-text>
         <div>
           <ion-chip class="ion-no-margin" [color]="getStatusColor(movie?.status)">
             {{ getStatus(movie?.status) }}
