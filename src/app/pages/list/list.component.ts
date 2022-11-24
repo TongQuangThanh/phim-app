@@ -60,7 +60,7 @@ export class ListComponent implements OnInit {
       this.movies = this.movies.concat(data.movies);
       if (event) {
         event.target.complete();
-        if (this.pageNumber === data.allPage) {
+        if (this.pageNumber === data.totalRecords.total) {
           event.target.disabled = true;
         }
       }

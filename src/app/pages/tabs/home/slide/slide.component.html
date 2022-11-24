@@ -6,8 +6,8 @@
   <ion-slide class="flex-column ion-align-items-start ion-text-start f-12" *ngFor="let item of movies"
     [routerLink]="['/phim', item.slug]">
     <img class="curve-top" [src]="item.thumb_url|| item.poster_url" (load)="loaded()" />
-    <h6 class="text-ellipsis w-100 text-light">{{ item.name }}</h6>
-    <div class="mb-05 text-light">
+    <h6 class="text-ellipsis w-100 color-white">{{ item.name }}</h6>
+    <div class="mb-05 color-white">
       <ion-text class="mr-025">{{ item.year }}</ion-text> |
       <ion-chip class="ion-no-margin px-05 py-0 ml-025 chip f-12" [color]="getStatusColor(item?.status)">
         {{ getStatus(item?.status) }}

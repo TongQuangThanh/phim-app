@@ -14,7 +14,7 @@
     <ion-input color="light" [(ngModel)]="str" placeholder="Tìm theo tên, đạo diễn, diễn viên..."></ion-input>
     <ion-icon color="light" ios="search-outline" md="search-sharp" slot="end" (click)="search()"></ion-icon>
   </ion-item>
-  <div class="ion-margin ion-padding-vertical" *ngIf="movies.length === 0">
+  <div class="ion-margin" *ngIf="movies.length === 0">
     <ion-row class="ion-justify-content-center ion-align-items-center">
       <div class="line ion-margin-end"></div>
       <ion-text color="light">hoặc</ion-text>
@@ -43,7 +43,12 @@
       </ion-infinite-scroll-content>
     </ion-infinite-scroll>
   </div>
-  <div *ngIf="hint.length > 0 && movies.length === 0">
+  <div *ngIf="noResult" class="ion-margin">
+    <div class="ion-text-center color-white">
+      Không có kết quả phù hợp
+    </div>
+  </div>
+  <div *ngIf="hint.length > 0 && movies.length === 0" class="mt-2">
     <ion-title color="light" class="ion-padding-horizontal">Gợi ý cho bạn</ion-title>
     <ion-list>
       <ion-item *ngFor="let item of hint">

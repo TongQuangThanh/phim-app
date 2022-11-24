@@ -12,7 +12,7 @@ export interface Data {
 
 export interface InternalPageResult {
   movies: Movie[];
-  allPage: number;
+  totalRecords: { total: number };
 }
 
 export interface HomeResult {

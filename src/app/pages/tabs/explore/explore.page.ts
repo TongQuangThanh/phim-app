@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { APP_NAME_TYPE_ARR, APP_NAME_STATUS_ARR, defaultShowChip } from 'src/app/shared/common/const';
 import { getDataLocalStorage, getStatus, getStatusColor } from 'src/app/shared/common/utils';
-import { InternalPageResult } from 'src/app/shared/models/data';
+import { DataResult, InternalPageResult } from 'src/app/shared/models/data';
 import { PageResult } from 'src/app/shared/models/page';
 import { MovieService } from 'src/app/shared/services/movie.service';
 import { FilterComponent } from './filter/filter.component';
@@ -36,6 +36,7 @@ export class ExplorePage implements OnInit {
   movies = [];
   hint = [];
   showFilter = true;
+  noResult = false;
   pageNumber = 0;
   constructor(
     private modalCtrl: ModalController,
@@ -54,9 +55,7 @@ export class ExplorePage implements OnInit {
         this.search();
       }
 
-      // this.movieService.getMovies().subscribe((result: PageResult) => {
-      //   this.hint = result.items;
-      // });
+      this.movieService.getMovies().subscribe((result: PageResult) => this.hint = result.items);
     });
   }
 
@@ -97,11 +96,16 @@ export class ExplorePage implements OnInit {
       this.selectedCountries.join(), this.selectedStatus.join(), this.from, this.to, this.pageNumber
     ).subscribe(result => {
       const data = result.data as InternalPageResult;
-      this.movies = this.movies.concat(data.movies);
-      this.showFilter = false;
+      if (data.movies?.length > 0) {
+        this.movies = this.movies.concat(data.movies);
+        this.showFilter = false;
+        this.noResult = false;
+      } else {
+        this.noResult = true;
+      }
       if (event) {
         event.target.complete();
-        if (this.pageNumber === data.allPage) {
+        if (this.pageNumber === data.totalRecords.total) {
           event.target.disabled = true;
         }
       }
