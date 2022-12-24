@@ -13,7 +13,7 @@ export const APP_NAME_CATEGORY_SELECTED = APP_NAME + 'category_selected';
 
 export const url = 'https://ophim1.com';
 // export const internalURL = 'http://localhost:3080';
-export const internalURL = 'https://thnvn-phim.onrender.com';
+export const internalURL = 'https://thnvn-phim-zy3j.onrender.com';
 
 export const PLAYER_ID = 'movie-player-id';
 export const TRAILER_ID = 'trailer-player-id';

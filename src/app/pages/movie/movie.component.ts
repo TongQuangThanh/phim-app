@@ -173,6 +173,7 @@ export class MovieComponent implements OnInit {
 
   async rewardVideo(): Promise<void> {
     try {
+      // TODO
       const adId = isPlatform('ios') ? adVideoIos : adVideoAndroid;
       // const adId = 'ca-app-pub-3940256099942544/5224354917';
       await AdMob.prepareRewardVideoAd({ adId });

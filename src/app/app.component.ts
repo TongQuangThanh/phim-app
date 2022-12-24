@@ -124,16 +124,6 @@ export class AppComponent implements OnInit {
     this.platform.ready().then(async () => {
       const { status } = await AdMob.trackingAuthorizationStatus();
       if (status === 'notDetermined') {
-        /**
-         * If you want to explain TrackingAuthorization before showing the iOS dialog,
-         * you can show the modal here.
-         * ex)
-         * const modal = await this.modalCtrl.create({
-         *   component: RequestTrackingPage,
-         * });
-         * await modal.present();
-         * await modal.onDidDismiss();  // Wait for close modal
-         **/
         const modal = await this.modalCtrl.create({
           message: 'Please approve ads for maintain our service',
         });
@@ -141,6 +131,8 @@ export class AppComponent implements OnInit {
         await modal.onDidDismiss();  // Wait for close modal
       }
       await AdMob.initialize({
+        // TODO
+        // initializeForTesting: true,
         requestTrackingAuthorization: true
       });
     });
